@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useState } from 'react';
+
 
 export type MovieItemProps = {
     id: number;
@@ -18,6 +19,7 @@ export type MovieItemProps = {
 
 export const MovieItem = (props: MovieItemProps) => {
     const { title, overview, likes, vote_average } = props;
+    const [isFavorite, setFavorite] = useState(false);
 
     return (
         <div className='movie-card__wrapper'>
@@ -27,6 +29,12 @@ export const MovieItem = (props: MovieItemProps) => {
                 <span className='movie-card__likes'>{likes}</span>
                 <span className='movie-card__vote'>{vote_average}</span>
             </div>
+            <button onClick={() => {
+                setFavorite(!isFavorite)
+            }}>
+                {isFavorite ? `Убрать из избранного` : `В избранное`}
+            </button>
         </div>
+
     );
 };
