@@ -1,19 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import { MovieItemProps, MovieItem } from '../movie-item/movie-item';
+import { MOVIE_URL } from '../../constans';
 
 export const MovieList = () => {
-    const [films, setFilms] = useState<MovieItemProps[]>([]);
+    const [movie, setMovie] = useState<MovieItemProps[]>([]);
+
     useEffect(() => {
-        fetch('https://devlab.website/v1/movies')
+        fetch(MOVIE_URL + 'movies')
         .then(response => response.json())
         .then(response => {
-            const data = response;
-            setFilms(data);
+            setMovie(response);
         })
     }, []);
     return (
         <div className='movie-list__wrapper'>
-          {films.map(film =>
+          {movie.map(film =>
             <MovieItem {...film} key={film.id} />
             )}
         </div>
