@@ -1,21 +1,30 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
+import { useSelector, useDispatch } from "react-redux";
+
 import { MovieItemProps, MovieItem } from '../movie-item/movie-item';
 import { MOVIE_URL } from '../../constans';
+import { addElem } from '../../reduxSetup'
 
 export const MovieList = () => {
-    const [movie, setMovie] = useState<MovieItemProps[]>([]);
+    const dispatch = useDispatch();
+
 
     useEffect(() => {
         fetch(MOVIE_URL + 'movies')
         .then(response => response.json())
         .then(response => {
-            setMovie(response);
+            response.map((movie: MovieItemProps[]) => {
+                dispatch(addElem(movie));
+            });
         })
     }, []);
+
+    const elems = useSelector<RootStore, MovieItemProps[]>(state => state.list);
+
     return (
         <div className='movie-list__wrapper'>
-          {movie.map(film =>
-            <MovieItem {...film} key={film.id} />
+          {elems.map(movie =>
+            <MovieItem {...movie} key={movie.id} />
             )}
         </div>
     );
