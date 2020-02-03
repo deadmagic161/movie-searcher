@@ -1,5 +1,7 @@
-import React, { useState } from 'react';
-
+import React from "react";
+import { useDispatch } from 'react-redux';
+import { addLike } from '../../reduxSetup'
+ 
 
 export type MovieItemProps = {
     id: number;
@@ -9,7 +11,7 @@ export type MovieItemProps = {
     genres: string[];
     revenue: number;
     duration: number;
-    likes: number;
+    likes?: number;
     vote_average: number;
     vote_count: number;
     director?: string;
@@ -18,8 +20,10 @@ export type MovieItemProps = {
 };
 
 export const MovieItem = (props: MovieItemProps) => {
-    const { title, overview, likes, vote_average } = props;
-    const [isFavorite, setFavorite] = useState(false);
+    const { id, title, overview, likes, vote_average }  = props;
+    const dispatch = useDispatch();
+
+    const addFavorite = () =>{ dispatch(addLike(id))};
 
     return (
         <div className='movie-card__wrapper'>
@@ -29,11 +33,7 @@ export const MovieItem = (props: MovieItemProps) => {
                 <span className='movie-card__likes'>{likes}</span>
                 <span className='movie-card__vote'>{vote_average}</span>
             </div>
-            <button onClick={() => {
-                setFavorite(!isFavorite)
-            }}>
-                {isFavorite ? `Убрать из избранного` : `В избранное`}
-            </button>
+            <button onClick={addFavorite}>Like</button>
         </div>
 
     );
